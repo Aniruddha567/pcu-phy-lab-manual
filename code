@@ -1,6 +1,5 @@
-#include <iostream>
-#include <cmath>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 
 // Define section names
 #define DIFF_GRATING 1
@@ -10,12 +9,10 @@
 #define ULTRASONIC_INTERFEROMETER 5
 #define MAX_READINGS 100 // Maximum number of readings
 
-using namespace std;
-
 void newtonsRings() {
     int x;
-    cout << "Enter the number of readings you want to take: ";
-    cin >> x;
+    printf("Enter the number of readings you want to take: ");
+    scanf("%d", &x);
     float left_msr[x];
     float left_vrs[x];
     float right_msr[x];
@@ -23,14 +20,14 @@ void newtonsRings() {
 
     // Take the values of left msr, right msr, left vrs, right vrs
     for (int i = 0; i < x; i++) {
-        cout << "Enter the left msr: ";
-        cin >> left_msr[i];
-        cout << "Enter the left vrs: ";
-        cin >> left_vrs[i];
-        cout << "Enter the right msr: ";
-        cin >> right_msr[i];
-        cout << "Enter the right vrs: ";
-        cin >> right_vrs[i];
+        printf("Enter the left msr: ");
+        scanf("%f", &left_msr[i]);
+        printf("Enter the left vrs: ");
+        scanf("%f", &left_vrs[i]);
+        printf("Enter the right msr: ");
+        scanf("%f", &right_msr[i]);
+        printf("Enter the right vrs: ");
+        scanf("%f", &right_vrs[i]);
     }
 
     float mul = 0.01;
@@ -44,28 +41,28 @@ void newtonsRings() {
         right[i] = right_msr[i] + (mul * right_vrs[i]);
     }
 
-    cout << "Left total is:" << endl;
+    printf("Left total is:\n");
     for (int i = 0; i < x; i++) {
-        cout << left[i] << endl;
+        printf("%f\n", left[i]);
     }
 
-    cout << "Right total is:" << endl;
+    printf("Right total is:\n");
     for (int i = 0; i < x; i++) {
-        cout << right[i] << endl;
+        printf("%f\n", right[i]);
     }
 
-    cout << "Diameter is:" << endl;
+    printf("Diameter is:\n");
     float dia[x];
     for (int i = 0; i < x; i++) {
         dia[i] = right[i] - left[i];
-        cout << dia[i] << endl;
+        printf("%f\n", dia[i]);
     }
 }
 
 void solarCell() {
     int x;
-    cout << "Enter the number of values you want to take: ";
-    cin >> x;
+    printf("Enter the number of values you want to take: ");
+    scanf("%d", &x);
 
     int resistance1[x];
     double current[x];
@@ -74,70 +71,70 @@ void solarCell() {
     float resistance2[x];
 
     // resistance 1
-    cout << "Enter the resistance values:" << endl;
+    printf("Enter the resistance values:\n");
     for (int i = 0; i < x; i++) {
-        cin >> resistance1[i];
+        scanf("%d", &resistance1[i]);
     }
 
     // voltage
-    cout << "Enter the values of voltages:" << endl;
+    printf("Enter the values of voltages:\n");
     for (int i = 0; i < x; i++) {
-        cin >> voltage[i];
+        scanf("%f", &voltage[i]);
     }
 
     // current
-    cout << "Enter the current values in amperes:" << endl;
+    printf("Enter the current values in amperes:\n");
     for (int i = 0; i < x; i++) {
-        cin >> current[i]; // Use %f for float
+        scanf("%lf", &current[i]); // Use %lf for double
     }
 
     // power
-    cout << "Values of power are:" << endl;
+    printf("Values of power are:\n");
     for (int i = 0; i < x; i++) {
         power[i] = voltage[i] * current[i];
-        cout << power[i] << endl; // Use %lf for double
+        printf("%lf\n", power[i]); // Use %lf for double
     }
 
     // experimental resistance
-    cout << "Resistance in ohms:" << endl;
+    printf("Resistance in ohms:\n");
     for (int i = 0; i < x; i++) {
         if (current[i] != 0) { // Check for division by zero
             resistance2[i] = voltage[i] / current[i];
-            cout << resistance2[i] << endl;
+            printf("%f\n", resistance2[i]);
         } else {
-            cout << "Cannot calculate resistance due to zero current." << endl;
+            printf("Cannot calculate resistance due to zero current.\n");
         }
     }
 }
 
 void ultrasonicInterferometer() {
     int x;
-    cout << "Enter the number of readings (max " << MAX_READINGS << "): ";
-    if (!(cin >> x) || x <= 0 || x > MAX_READINGS) {
-        cout << "Invalid input. Exiting." << endl;
+    printf("Enter the number of readings (max %d): ", MAX_READINGS);
+    if (scanf("%d", &x) != 1 || x <= 0 || x > MAX_READINGS) {
+        printf("Invalid input. Exiting.\n");
         exit(1);
     }
 
-    float *Micrometer_reading = new float[x];
-    if (Micrometer_reading == nullptr) {
-        cout << "Memory allocation failed. Exiting." << endl;
+    float *Micrometer_reading = (float *)malloc(x * sizeof(float));
+    if (Micrometer_reading == NULL) {
+        printf("Memory allocation failed. Exiting.\n");
         exit(1);
     }
 
     // Get values
     for (int i = 0; i < x; i++) {
-        cout << "Enter the value: ";
-        if (!(cin >> Micrometer_reading[i])) {
-            cout << "Invalid input. Exiting." << endl;
-            delete[] Micrometer_reading;
+        printf("Enter the value: ");
+        if (scanf("%f", &Micrometer_reading[i]) != 1) {
+            printf("Invalid input. Exiting.\n");
+            free(Micrometer_reading);
             exit(1);
         }
     }
 
-    float *d = new float[x - 1];
-    if (d == nullptr) {
-        cout << "Memory allocation failed. Exiting." << endl;
-        delete[] Micrometer_reading;
+    float *d = (float *)malloc((x - 1) * sizeof(float));
+    if (d == NULL) {
+        printf("Memory allocation failed. Exiting.\n");
+        free(Micrometer_reading);
         exit(1);
     }
 
@@ -147,11 +144,11 @@ void ultrasonicInterferometer() {
     }
 
     // Output differences
-    cout << "Here are the differences:" << endl;
+    printf("Here are the differences:\n");
     for (int i = 0; i < x - 1; i++) {
-        cout << d[i] << " ";
+        printf("%f ", d[i]);
     }
-    cout << endl;
+    printf("\n");
 
     // Calculate average of d
     float sum = 0, average;
@@ -159,24 +156,24 @@ void ultrasonicInterferometer() {
         sum += d[i];
     }
     average = sum / (x - 1);
-    cout << "Average: " << average << endl;
+    printf("Average: %f\n", average);
 
     // Free allocated memory
-    delete[] Micrometer_reading;
-    delete[] d;
+    free(Micrometer_reading);
+    free(d);
 }
 
 int main() {
     int section_choice;
-    cout << "Only enter the number" << endl;
-    cout << "Choose a section to execute:" << endl;
-    cout << "1. Diffraction Grating" << endl;
-    cout << "2. Laser Based Experiment" << endl;
-    cout << "3. Newton's Rings" << endl;
-    cout << "4. Solar Cell" << endl;
-    cout << "5. Ultrasonic Interferometer" << endl;
+    printf("Only enter the number\n");
+    printf("Choose a section to execute:\n");
+    printf("1. Diffraction Grating\n");
+    printf("2. Laser Based Experiment\n");
+    printf("3. Newton's Rings\n");
+    printf("4. Solar Cell\n");
+    printf("5. Ultrasonic Interferometer\n");
 
-    cin >> section_choice;
+    scanf("%d", &section_choice);
 
     switch (section_choice) {
         case DIFF_GRATING:
@@ -195,7 +192,7 @@ int main() {
             ultrasonicInterferometer();
             break;
         default:
-            cout << "Invalid choice" << endl;
+            printf("Invalid choice\n");
             break;
     }
 
