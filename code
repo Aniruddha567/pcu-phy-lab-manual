@@ -1,0 +1,203 @@
+#include <iostream>
+#include <cmath>
+#include <cstdlib>
+
+// Define section names
+#define DIFF_GRATING 1
+#define LASER_BASED_EXPERIMENT 2
+#define NEWTONS_RINGS 3
+#define SOLAR_CELL 4
+#define ULTRASONIC_INTERFEROMETER 5
+#define MAX_READINGS 100 // Maximum number of readings
+
+using namespace std;
+
+void newtonsRings() {
+    int x;
+    cout << "Enter the number of readings you want to take: ";
+    cin >> x;
+    float left_msr[x];
+    float left_vrs[x];
+    float right_msr[x];
+    float right_vrs[x];
+
+    // Take the values of left msr, right msr, left vrs, right vrs
+    for (int i = 0; i < x; i++) {
+        cout << "Enter the left msr: ";
+        cin >> left_msr[i];
+        cout << "Enter the left vrs: ";
+        cin >> left_vrs[i];
+        cout << "Enter the right msr: ";
+        cin >> right_msr[i];
+        cout << "Enter the right vrs: ";
+        cin >> right_vrs[i];
+    }
+
+    float mul = 0.01;
+    float left[x];
+    for (int i = 0; i < x; i++) {
+        left[i] = left_msr[i] + (mul * left_vrs[i]);
+    }
+
+    float right[x];
+    for (int i = 0; i < x; i++) {
+        right[i] = right_msr[i] + (mul * right_vrs[i]);
+    }
+
+    cout << "Left total is:" << endl;
+    for (int i = 0; i < x; i++) {
+        cout << left[i] << endl;
+    }
+
+    cout << "Right total is:" << endl;
+    for (int i = 0; i < x; i++) {
+        cout << right[i] << endl;
+    }
+
+    cout << "Diameter is:" << endl;
+    float dia[x];
+    for (int i = 0; i < x; i++) {
+        dia[i] = right[i] - left[i];
+        cout << dia[i] << endl;
+    }
+}
+
+void solarCell() {
+    int x;
+    cout << "Enter the number of values you want to take: ";
+    cin >> x;
+
+    int resistance1[x];
+    double current[x];
+    float voltage[x];
+    double power[x];
+    float resistance2[x];
+
+    // resistance 1
+    cout << "Enter the resistance values:" << endl;
+    for (int i = 0; i < x; i++) {
+        cin >> resistance1[i];
+    }
+
+    // voltage
+    cout << "Enter the values of voltages:" << endl;
+    for (int i = 0; i < x; i++) {
+        cin >> voltage[i];
+    }
+
+    // current
+    cout << "Enter the current values in amperes:" << endl;
+    for (int i = 0; i < x; i++) {
+        cin >> current[i]; // Use %f for float
+    }
+
+    // power
+    cout << "Values of power are:" << endl;
+    for (int i = 0; i < x; i++) {
+        power[i] = voltage[i] * current[i];
+        cout << power[i] << endl; // Use %lf for double
+    }
+
+    // experimental resistance
+    cout << "Resistance in ohms:" << endl;
+    for (int i = 0; i < x; i++) {
+        if (current[i] != 0) { // Check for division by zero
+            resistance2[i] = voltage[i] / current[i];
+            cout << resistance2[i] << endl;
+        } else {
+            cout << "Cannot calculate resistance due to zero current." << endl;
+        }
+    }
+}
+
+void ultrasonicInterferometer() {
+    int x;
+    cout << "Enter the number of readings (max " << MAX_READINGS << "): ";
+    if (!(cin >> x) || x <= 0 || x > MAX_READINGS) {
+        cout << "Invalid input. Exiting." << endl;
+        exit(1);
+    }
+
+    float *Micrometer_reading = new float[x];
+    if (Micrometer_reading == nullptr) {
+        cout << "Memory allocation failed. Exiting." << endl;
+        exit(1);
+    }
+
+    // Get values
+    for (int i = 0; i < x; i++) {
+        cout << "Enter the value: ";
+        if (!(cin >> Micrometer_reading[i])) {
+            cout << "Invalid input. Exiting." << endl;
+            delete[] Micrometer_reading;
+            exit(1);
+        }
+    }
+
+    float *d = new float[x - 1];
+    if (d == nullptr) {
+        cout << "Memory allocation failed. Exiting." << endl;
+        delete[] Micrometer_reading;
+        exit(1);
+    }
+
+    // Calculate d
+    for (int i = 0; i < x - 1; i++) {
+        d[i] = Micrometer_reading[i] - Micrometer_reading[i + 1];
+    }
+
+    // Output differences
+    cout << "Here are the differences:" << endl;
+    for (int i = 0; i < x - 1; i++) {
+        cout << d[i] << " ";
+    }
+    cout << endl;
+
+    // Calculate average of d
+    float sum = 0, average;
+    for (int i = 0; i < x - 1; i++) {
+        sum += d[i];
+    }
+    average = sum / (x - 1);
+    cout << "Average: " << average << endl;
+
+    // Free allocated memory
+    delete[] Micrometer_reading;
+    delete[] d;
+}
+
+int main() {
+    int section_choice;
+    cout << "Only enter the number" << endl;
+    cout << "Choose a section to execute:" << endl;
+    cout << "1. Diffraction Grating" << endl;
+    cout << "2. Laser Based Experiment" << endl;
+    cout << "3. Newton's Rings" << endl;
+    cout << "4. Solar Cell" << endl;
+    cout << "5. Ultrasonic Interferometer" << endl;
+
+    cin >> section_choice;
+
+    switch (section_choice) {
+        case DIFF_GRATING:
+            // Call the function for Diffraction Grating
+            break;
+        case LASER_BASED_EXPERIMENT:
+            // Call the function for Laser Based Experiment
+            break;
+        case NEWTONS_RINGS:
+            newtonsRings();
+            break;
+        case SOLAR_CELL:
+            solarCell();
+            break;
+        case ULTRASONIC_INTERFEROMETER:
+            ultrasonicInterferometer();
+            break;
+        default:
+            cout << "Invalid choice" << endl;
+            break;
+    }
+
+    return 0;
+}
