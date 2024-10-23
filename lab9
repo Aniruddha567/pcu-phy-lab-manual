@@ -1,0 +1,111 @@
+# Class definitions
+class Animal:
+    def __init__(self, name):  # Fixed the constructor
+        self.name = name  # Fixed the assignment
+
+    def speak(self):
+        print(f"{self.name} makes a sound")  # Parent class method
+
+
+class Dog(Animal):
+    def speak(self):
+        print(f"{self.name} barks")  # Dog's specific implementation
+
+
+# Creating instances of Animal and Dog
+a = Animal("wild animal")
+a.speak()
+
+d = Dog("Buddy")
+d.speak()
+
+
+class Bird:
+    def fly(self):
+        print("Bird flies")  # Method for Bird
+
+
+class Bat(Animal, Bird):
+    def sleep(self):
+        print("Bat sleeps")  # Method for Bat
+
+
+# Creating an instance of Bat
+bat = Bat("Bat")
+bat.speak()
+bat.sleep()
+bat.fly()
+
+
+# Polymorphism example
+class Rectangle:
+    def __init__(self, length, breadth):  # Fixed the constructor
+        self.length = length
+        self.breadth = breadth
+
+    def area(self):
+        return self.length * self.breadth  # Corrected area calculation
+
+
+class Circle:
+    def __init__(self, radius):  # Fixed the constructor
+        self.radius = radius
+
+    def area(self):
+        return self.radius ** 2 * 3.14  # Corrected area calculation
+
+
+def print_area(shape):
+    print(f"Area: {shape.area()}")  # Fixed f-string
+
+
+# Create instances
+rectangle = Rectangle(23, 78)
+circle = Circle(89)
+
+# Print areas
+print_area(rectangle)
+print_area(circle)
+
+
+# File handling
+# Create a file and write to it
+with open("example1211.txt", "w") as f:
+    f.write("hello\n")
+    f.write("hello\n")
+
+# Read from a file
+with open("example1211.txt", "r") as f:
+    content = f.read()
+    print(content)
+
+# Writing another example
+with open("example1232.txt", "w") as f1:
+    f1.write("this is pcu\n")
+    f1.write("pune\n")
+
+# Reading the contents of the second example
+with open("example1232.txt", "r") as f:
+    content = f.read()
+    print(content)
+
+# Append to a file
+with open("example1253.txt", "a") as f2:
+    f2.write("pcet\n")
+    f2.write("world\n")
+
+# Reading the contents of the appended file
+with open("example1253.txt", "r") as f:
+    content = f.read()
+    print(content)
+
+# Create a list with strings and write to a file
+lines = ["String for line 1", "String for line 2", "String for line 3"]
+with open('list_example1211.txt', 'w') as f:
+    for line in lines:
+        f.write(line + '\n')
+
+# Read from the list example file
+with open('list_example1211.txt', 'r') as f:
+    content = f.read()
+    print(content)
